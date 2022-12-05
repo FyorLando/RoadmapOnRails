@@ -1,5 +1,10 @@
 module UserModule
   class User < ActiveRecord::Base
+    def to_json(options={})
+      options[:except] ||= [:password_digest]
+      super(options)
+    end
+
 
     has_secure_password
     validates :email, presence: true, uniqueness: true

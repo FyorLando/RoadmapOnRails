@@ -31,17 +31,20 @@ module UserModule
         render json: { errors: @user.errors.full_messages },
                status: :unprocessable_entity
       end
+      render json: @user, status: :accepted
     end
 
 
     def destroy
-      @user.destroy
+      if @user.destroy
+        render json: 'Successfully deleted', status: :accepted
+      end
     end
 
     private
 
     def find_user
-      @user = User.find_by_username!(params[:_username])
+      @user = UserModule::User.find_by_id!(params[:id])
     rescue ActiveRecord::RecordNotFound
       render json: { errors: 'User not found' }, status: :not_found
     end

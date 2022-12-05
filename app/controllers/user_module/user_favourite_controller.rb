@@ -14,10 +14,12 @@ module UserModule
     end
 
     def create
-      @user = User.find_by_id(user_f_params[:user_id])
-      #TODO topic_id check
-      if @user
+      if User.exists?(id: user_f_params[:user_id])
         @user_f = UserFavourite.new(user_f_params)
+      else
+        render json: { errors: "incorrect user_id" },
+               status: :unprocessable_entity
+        return
       end
       if @user_f.save
         render json: @user_f, status: :created
@@ -27,12 +29,34 @@ module UserModule
       end
     end
 
+
+
+    def update
+      unless User.exists?(id: user_f_params[:user_id])
+        render json: { errors: "incorrect user_id" },
+               status: :unprocessable_entity
+        return
+      end
+      unless @user_f.update(user_f_params)
+        render json: { errors: @user_f.errors.full_messages },
+               status: :unprocessable_entity
+      end
+      render json: @user_f, status: :accepted
+    end
+
+
+    def destroy
+      if @user_f.destroy
+        render json: 'Successfully deleted', status: :accepted
+      end
+    end
+
     private
 
     def find_user_f
       @user_f = UserFavourite.find_by_id!(params[:id])
     rescue ActiveRecord::RecordNotFound
-      render json: { errors: 'User not found' }, status: :not_found
+      render json: { errors: 'UserFavourite not found' }, status: :not_found
     end
 
     def user_f_params
