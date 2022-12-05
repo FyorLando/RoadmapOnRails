@@ -24,7 +24,7 @@ default: &default
 development:
   <<: *default
   database: railsdb #ENV['DB_NAME']
-  password: 123123 #ENV['DB_PASSWORD']
+  password: postgres #ENV['DB_PASSWORD']
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
