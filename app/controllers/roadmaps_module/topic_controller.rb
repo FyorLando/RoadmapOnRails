@@ -25,7 +25,7 @@ module RoadmapsModule
     end
 
     def update
-      if @topic.created_user_id == @current_user.id
+      if @topic.user.id == @current_user.id
         unless @topic.update(topic_params)
           render json: { errors: @topic.errors.full_messages },
                  status: :unprocessable_entity
@@ -35,7 +35,7 @@ module RoadmapsModule
     end
 
     def destroy
-      if @topic.created_user_id != @current_user.id
+      if @topic.user.id != @current_user.id
         if @topic.destroy
           render json: 'Successfully deleted', status: :accepted
         end
