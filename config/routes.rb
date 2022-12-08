@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   namespace :user_module do
     resources :user
     resources :user_favourite
+    resources :role
   end
 
   #Auth routes
