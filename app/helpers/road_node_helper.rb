@@ -1,14 +1,18 @@
 # frozen_string_literal: true
 
 class RoadNodeHelper
-  def self.save_tree(root_node, parent_id = nil)
-    children = root_node[:children]
-    root_node[:parent_id] = parent_id
-    node = RoadNode.new(root_node)
-    children each do |child|
-      save_tree(child, node.id)
+  def self.genTreeResponse(all_nodes, id = nil)
+    current_node = all_nodes.where(:id => id)[0].attributes
+    children = all_nodes.where(:parent_id => id).to_a
+
+    children_array = []
+
+    children.each do |child|
+      children_array.push(self.genTreeResponse(all_nodes, child["id"]))
     end
 
-    true
+    current_node[:children] = children_array
+
+    current_node
   end
 end
