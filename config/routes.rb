@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   namespace :roadmaps_module do
     resources :topic
     resources :road_node
+    resources :attachment
   end
 
   #Auth routes

@@ -12,6 +12,7 @@ class RoadNodeHelper
     end
 
     current_node[:children] = children_array
+    current_node[:attachments] = RoadmapsModule::Attachment.where(:node_id => id)
 
     current_node
   end

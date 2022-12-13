@@ -1,6 +1,7 @@
 module RoadmapsModule
   class RoadNode < ApplicationRecord
     belongs_to :topic
+    has_many :attachments
 
     def children
       RoadNode.find_each(parent_id: id)
