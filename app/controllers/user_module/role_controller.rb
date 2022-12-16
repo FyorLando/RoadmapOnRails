@@ -1,7 +1,7 @@
 module UserModule
-  class UserController < ApplicationController
+  class RoleController < ApplicationController
     before_action :authorize_request
-    before_action :find_user, except: %i[create index]
+    before_action :find_role, except: %i[create index]
 
 
     def index
@@ -16,7 +16,7 @@ module UserModule
 
 
     def create
-      @role = User.new(role_params)
+      @role = Role.new(role_params)
       if @role.save
         render json: @role, status: :created
       else
@@ -27,7 +27,7 @@ module UserModule
 
 
     def update
-      unless @role.update(user_params)
+      unless @role.update(role_params)
         render json: { errors: @role.errors.full_messages },
                status: :unprocessable_entity
       end
