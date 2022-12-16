@@ -1,6 +1,6 @@
-class CreateRolesTable < ActiveRecord::Migration[7.0]
+class CreateRoles < ActiveRecord::Migration[7.0]
   def change
-    create_table :roles_tables do |t|
+    create_table :roles do |t|
       t.string :title
       t.string :const
 
