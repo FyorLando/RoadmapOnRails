@@ -1,6 +1,6 @@
 module RatesModule
   class TopicRateController < ApplicationController
-    before_action :authorize_request, except: :create
+    before_action :authorize_request
     before_action :find_topic_rate, except: %i[create index]
 
 
@@ -17,6 +17,7 @@ module RatesModule
 
     def create
       @topic_rate = TopicRate.new(topic_rate_params)
+      @topic_rate.created_user_id = @current_user.id
       if @topic_rate.save
         render json: @topic_rate, status: :created
       else
@@ -51,7 +52,7 @@ module RatesModule
 
     def topic_rate_params
       params.permit(
-        :comment, :rate
+        :comment, :rate, :topic_id
       )
     end
 
