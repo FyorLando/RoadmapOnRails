@@ -12,6 +12,10 @@ Rails.application.routes.draw do
     resources :attachment
   end
 
+  namespace :rates_module do
+    resources :topic_rate
+  end
+
   #Auth routes
   post '/auth/login', to: 'authentication#login'
   get '/*a', to: 'application#not_found'
