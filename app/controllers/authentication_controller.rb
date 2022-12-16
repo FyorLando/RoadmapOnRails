@@ -1,7 +1,6 @@
 class AuthenticationController < ApplicationController
   before_action :authorize_request, except: :login
 
-
   def login
     @user = UserModule::User.find_by_email(params[:email])
     if @user&.authenticate(params[:password])
@@ -10,7 +9,7 @@ class AuthenticationController < ApplicationController
       render json: { token: token, exp: time.strftime("%m-%d-%Y %H:%M"),
                      username: @user.email }, status: :ok
     else
-      render json: { error: 'unauthorized' }, status: :unauthorized
+      render json: { error: 'Unauthorized' }, status: :unauthorized
     end
   end
 

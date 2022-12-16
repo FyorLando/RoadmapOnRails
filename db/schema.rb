@@ -10,13 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_04_153450) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_13_191741) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "attachments", force: :cascade do |t|
+    t.bigint "node_id"
+    t.text "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "road_nodes", force: :cascade do |t|
+    t.bigint "parent_id"
+    t.string "title"
+    t.text "description"
+    t.bigint "topic_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "roles_tables", force: :cascade do |t|
     t.string "title"
     t.string "const"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.bigint "created_user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
