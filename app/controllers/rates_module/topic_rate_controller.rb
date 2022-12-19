@@ -28,7 +28,7 @@ module RatesModule
 
 
     def update
-      unless @topic_rate.update(topic_rate_params)
+      unless @topic_rate.update(topic_upd_rate_params)
         render json: { errors: @topic_rate.errors.full_messages },
                status: :unprocessable_entity
       end
@@ -56,6 +56,11 @@ module RatesModule
       )
     end
 
+    def topic_upd_rate_params
+      params.permit(
+        :comment, :rate
+      )
+    end
   end
 
 end
