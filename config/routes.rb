@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
   namespace :rates_module do
     resources :topic_rate
+    resources :node_rate
   end
 
   #Auth routes
