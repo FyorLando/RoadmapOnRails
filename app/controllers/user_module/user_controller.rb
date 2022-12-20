@@ -51,7 +51,7 @@ module UserModule
 
     def user_params
       params.permit(
-        :email, :password, :password_confirmation
+        :email, :password, :password_confirmation, :role_id
       )
     end
 
