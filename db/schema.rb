@@ -10,13 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_13_191741) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_16_124549) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "attachments", force: :cascade do |t|
     t.bigint "node_id"
     t.text "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "node_rates", force: :cascade do |t|
+    t.bigint "node_id"
+    t.text "comment"
+    t.integer "rate"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -30,9 +38,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_13_191741) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "roles_tables", force: :cascade do |t|
+  create_table "roles", force: :cascade do |t|
     t.string "title"
     t.string "const"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "topic_rates", force: :cascade do |t|
+    t.bigint "topic_id"
+    t.text "comment"
+    t.integer "rate"
+    t.bigint "created_user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -46,25 +63,25 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_13_191741) do
   end
 
   create_table "user_favourites", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "topic_id"
+    t.bigint "user_id"
+    t.bigint "topic_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "user_reads", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "node_id"
+    t.bigint "user_id"
+    t.bigint "node_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
     t.string "email"
-    t.integer "role_id"
+    t.string "password_digest"
+    t.bigint "role_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "password_digest"
   end
 
 end
