@@ -5,6 +5,7 @@ module UserModule
 
     def index
       @user_r = UserRead.all
+      @user_r = @user_r.filter_by_user_id(user_r_params[:user_id]) if params[:user_id].present?
       render json: @user_r, status: :ok
     end
 
