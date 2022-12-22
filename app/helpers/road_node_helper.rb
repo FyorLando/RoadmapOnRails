@@ -16,4 +16,13 @@ class RoadNodeHelper
 
     current_node
   end
+
+  def self.removeRecursively(node_id)
+    children = RoadmapsModule::RoadNode.where(:parent_id => node_id)
+
+    children.each do |child|
+      self.removeRecursively(child.id)
+      child.destroy
+    end
+  end
 end

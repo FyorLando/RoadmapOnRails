@@ -49,6 +49,7 @@ module RoadmapsModule
     def destroy
       if @node.topic.created_user_id == @current_user.id
         if @node.destroy
+          RoadNodeHelper::removeRecursively(@node.id)
           render json: { status: 'Successfully deleted' }, status: :accepted
         end
       else
