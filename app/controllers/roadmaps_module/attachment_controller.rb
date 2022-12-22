@@ -14,7 +14,7 @@ module RoadmapsModule
 
     def create
       road_node = RoadNode.find_by_id(attachment_params[:node_id])
-      if road_node != nil and road_node.topic.created_user_id == @current_user.id
+      if road_node != nil and road_node.topic.created_user_id == @current_user.id or is_admin
         @attachment = Attachment.new(attachment_params)
         if @attachment.save
           render json: @attachment, status: :created
@@ -29,7 +29,7 @@ module RoadmapsModule
 
     def update
       road_node = RoadNode.find_by_id(attachment_params[:node_id])
-      if road_node != nil and road_node.topic.created_user_id == @current_user.id
+      if road_node != nil and road_node.topic.created_user_id == @current_user.id or is_admin
         unless @attachment.update(attachment_params)
           render json: { errors: @attachment.errors.full_messages },
                  status: :unprocessable_entity
@@ -40,7 +40,7 @@ module RoadmapsModule
 
     def destroy
       road_node = @attachment.road_node
-      if road_node != nil and road_node.topic.created_user_id == @current_user.id
+      if road_node != nil and road_node.topic.created_user_id == @current_user.id or is_admin
         if @attachment.destroy
           render json: { status: 'Successfully deleted' }, status: :accepted
         else

@@ -37,7 +37,7 @@ module RoadmapsModule
     end
 
     def update
-      if @node.topic.created_user_id == @current_user.id
+      if @node.topic.created_user_id == @current_user.id or is_admin
         unless @node.update(road_node_params)
           render json: { errors: @node.errors.full_messages },
                  status: :unprocessable_entity
@@ -47,7 +47,7 @@ module RoadmapsModule
     end
 
     def destroy
-      if @node.topic.created_user_id == @current_user.id
+      if @node.topic.created_user_id == @current_user.id or is_admin
         if @node.destroy
           RoadNodeHelper::removeRecursively(@node.id)
           render json: { status: 'Successfully deleted' }, status: :accepted
