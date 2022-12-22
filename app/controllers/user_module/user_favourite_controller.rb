@@ -21,6 +21,13 @@ module UserModule
                status: :unprocessable_entity
         return
       end
+      if RoadmapsModule::Topic.exists?(id: user_f_params[:topic_id])
+        @user_r = UserFavourite.new(user_f_params)
+      else
+        render json: { errors: "incorrect topic_id" },
+               status: :unprocessable_entity
+        return
+      end
       if @user_f.save
         render json: @user_f, status: :created
       else
@@ -34,6 +41,11 @@ module UserModule
     def update
       unless User.exists?(id: user_f_params[:user_id])
         render json: { errors: "incorrect user_id" },
+               status: :unprocessable_entity
+        return
+      end
+      unless RoadmapsModule::Topic.exists?(id: user_f_params[:topic_id])
+        render json: { errors: "incorrect topic_id" },
                status: :unprocessable_entity
         return
       end
@@ -61,7 +73,7 @@ module UserModule
 
     def user_f_params
       params.permit(
-        :user_id#, :topic_id
+        :user_id, :topic_id
       )
     end
 

@@ -6,8 +6,13 @@ module RoadmapsModule
     def index
       topic_id = params.permit(:topic_id)[:topic_id]
       nodes = RoadNode.where(:topic_id => topic_id)
-      render json: RoadNodeHelper.genTreeResponse(nodes, nodes.where(:parent_id => nil)[0].attributes["id"]),
-             status: :ok
+      if nodes.count == 0
+        render json: [],
+               status: :ok
+      else
+        render json: RoadNodeHelper.genTreeResponse(nodes, nodes.where(:parent_id => nil)[0].attributes["id"]),
+               status: :ok
+      end
     end
 
     def show
