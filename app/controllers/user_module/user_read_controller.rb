@@ -8,7 +8,6 @@ module UserModule
       render json: @user_r, status: :ok
     end
 
-
     def show
       render json: @user_r, status: :ok
     end
@@ -36,30 +35,35 @@ module UserModule
       end
     end
 
-
-
     def update
-      unless User.exists?(id: user_r_params[:user_id])
-        render json: { errors: "incorrect user_id" },
-               status: :unprocessable_entity
-        return
+      if @user_r.user_id == @current_user.id or is_admin
+        unless User.exists?(id: user_r_params[:user_id])
+          render json: { errors: "incorrect user_id" },
+                 status: :unprocessable_entity
+          return
+        end
+        unless RoadmapsModule::RoadNode.exists?(id: user_r_params[:node_id])
+          render json: { errors: "incorrect user_id" },
+                 status: :unprocessable_entity
+          return
+        end
+        unless @user_r.update(user_r_params)
+          render json: { errors: @user_r.errors.full_messages },
+                 status: :unprocessable_entity
+        end
+        render json: @user_r, status: :accepted
+      else
+        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
       end
-      unless RoadmapsModule::RoadNode.exists?(id: user_r_params[:node_id])
-        render json: { errors: "incorrect user_id" },
-               status: :unprocessable_entity
-        return
-      end
-      unless @user_r.update(user_r_params)
-        render json: { errors: @user_r.errors.full_messages },
-               status: :unprocessable_entity
-      end
-      render json: @user_r, status: :accepted
     end
 
-
     def destroy
-      if @user_r.destroy
-        render json: 'Successfully deleted', status: :accepted
+      if @user_r.user_id == @current_user.id or is_admin
+        if @user_r.destroy
+          render json: 'Successfully deleted', status: :accepted
+        end
+      else
+        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
       end
     end
 
