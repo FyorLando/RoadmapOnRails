@@ -22,7 +22,7 @@ module RoadmapsModule
     def create
       payload = road_node_params
       topic = Topic.find_by_id(payload[:topic_id])
-      if topic != nil and topic.created_user_id == @current_user.id
+      if topic != nil and (topic.created_user_id == @current_user.id or is_admin)
         node = RoadNode.new(payload)
         if node.save
           render json: node, status: :created
@@ -31,8 +31,7 @@ module RoadmapsModule
                  status: :unprocessable_entity
         end
       else
-        render json: { status: "RoadNode Not Found!" },
-               status: :unprocessable_entity
+        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
       end
     end
 
@@ -43,6 +42,8 @@ module RoadmapsModule
                  status: :unprocessable_entity
         end
         render json: @node, status: :accepted
+      else
+        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
       end
     end
 
@@ -53,8 +54,7 @@ module RoadmapsModule
           render json: { status: 'Successfully deleted' }, status: :accepted
         end
       else
-        render json: { status: "RoadNode Not Deleted!" },
-               status: :unprocessable_entity
+        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
       end
     end
 

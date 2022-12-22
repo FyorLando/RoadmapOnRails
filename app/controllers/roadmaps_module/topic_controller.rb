@@ -31,6 +31,8 @@ module RoadmapsModule
                  status: :unprocessable_entity
         end
         render json: @topic, status: :accepted
+      else
+        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
       end
     end
 
@@ -39,6 +41,8 @@ module RoadmapsModule
         if @topic.destroy
           render json: 'Successfully deleted', status: :accepted
         end
+      else
+        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
       end
     end
 

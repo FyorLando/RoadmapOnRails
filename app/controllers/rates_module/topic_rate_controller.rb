@@ -28,17 +28,25 @@ module RatesModule
 
 
     def update
-      unless @topic_rate.update(topic_rate_upd_params)
-        render json: { errors: @topic_rate.errors.full_messages },
-               status: :unprocessable_entity
+      if @topic_rate.user_id == @current_user.id or is_admin
+        unless @topic_rate.update(topic_rate_upd_params)
+          render json: { errors: @topic_rate.errors.full_messages },
+                 status: :unprocessable_entity
+        end
+        render json: @topic_rate, status: :accepted
+      else
+        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
       end
-      render json: @topic_rate, status: :accepted
     end
 
 
     def destroy
-      if @topic_rate.destroy
-        render json: 'Successfully deleted', status: :accepted
+      if @topic_rate.user_id == @current_user.id or is_admin
+        if @topic_rate.destroy
+          render json: 'Successfully deleted', status: :accepted
+        end
+      else
+        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
       end
     end
 
