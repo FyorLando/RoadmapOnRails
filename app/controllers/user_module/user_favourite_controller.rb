@@ -9,7 +9,6 @@ module UserModule
       render json: @users_f.to_json( :include => [:topic] , :except => [:topic_id]), status: :ok
     end
 
-
     def show
       render json: @user_f, status: :ok
     end
@@ -37,30 +36,35 @@ module UserModule
       end
     end
 
-
-
     def update
-      unless User.exists?(id: user_f_params[:user_id])
-        render json: { errors: "incorrect user_id" },
-               status: :unprocessable_entity
-        return
+      if @user_f.user_id == @current_user.id or is_admin
+        unless User.exists?(id: user_f_params[:user_id])
+          render json: { errors: "incorrect user_id" },
+                 status: :unprocessable_entity
+          return
+        end
+        unless RoadmapsModule::Topic.exists?(id: user_f_params[:topic_id])
+          render json: { errors: "incorrect topic_id" },
+                 status: :unprocessable_entity
+          return
+        end
+        unless @user_f.update(user_f_params)
+          render json: { errors: @user_f.errors.full_messages },
+                 status: :unprocessable_entity
+        end
+        render json: @user_f, status: :accepted
+      else
+        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
       end
-      unless RoadmapsModule::Topic.exists?(id: user_f_params[:topic_id])
-        render json: { errors: "incorrect topic_id" },
-               status: :unprocessable_entity
-        return
-      end
-      unless @user_f.update(user_f_params)
-        render json: { errors: @user_f.errors.full_messages },
-               status: :unprocessable_entity
-      end
-      render json: @user_f, status: :accepted
     end
 
-
     def destroy
-      if @user_f.destroy
-        render json: 'Successfully deleted', status: :accepted
+      if @user_f.user_id == @current_user.id or is_admin
+        if @user_f.destroy
+          render json: 'Successfully deleted', status: :accepted
+        end
+      else
+        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
       end
     end
 

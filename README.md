@@ -1,24 +1,42 @@
-# README
+# Roadmaps On Rails (and VUE actually)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Мотивация: 
 
-Things you may want to cover:
+Существует сайт roadmap.sh, на котором нет никакой возможности для пользователей разгуляться
 
-* Ruby version
+### User-story:
 
-* System dependencies
+Пользователи могу создавать собственные RoadMap’ы, которые, пройдя через подтверждение админа, могут выйти в общий доступ
+Саму карту, также как и отдельные узлы, можно комментировать и ставить оценки, чтобы они поднимались в рейтинге
+Каждый узел может содержать текст, ссылки на источники и возможно даже картинки
 
-* Configuration
+### Страницы приложения:
 
-* Database creation
+* Вход / Регистрация
+* Список карт
+* Страница отдельной карты для редактирования
+* Страница отдельной карты для чтения, комментирования, выставления оценки и сохранение в свой список
+* Страница отдельных узлов для чтения, комментирования и выставления оценки
 
-* Database initialization
+### Запуск приложения:
 
-* How to run the test suite
+1. `rake db:create`
+2. `rake db:migrate`
+3. `rake db:seed`
+4. `rails s`
 
-* Services (job queues, cache servers, search engines, etc.)
+### Работа с приложением:
+1. Создание аккаунта путём регистрации
+2. Создать ТЕМУ Roadmap'ы
+3. Создать узлы, указывая названия, описания и дополнения
+4. После сохранения Roadmap'а выйдет в общий доступ и появится на главной странице
 
-* Deployment instructions
+### База данных:
+* СУБД: PostgreSQL
+* Структура базы данных: https://www.figma.com/file/gbUkI0O63fyOkSPqnC8MIl/RoadmapOnRails?node-id=0%3A1&t=VXjOeSz45mIw8Nw8-1
 
-* ...
+### Разработчики:
+* Лагутин Фёдор (team lead + backend, RoR)
+* Полянский Макс (backend, RoR)
+* Лысенко Мария (backend, RoR)
+* Баранов Иван (frontend, Vue.JS)

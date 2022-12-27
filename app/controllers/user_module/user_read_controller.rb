@@ -9,7 +9,6 @@ module UserModule
       render json: @user_r.to_json( :include => [:topic], :except => [:topic_id]), status: :ok
     end
 
-
     def show
       render json: @user_r, status: :ok
     end
@@ -37,8 +36,6 @@ module UserModule
       end
     end
 
-
-
     def update
       unless User.exists?(id: user_r_params[:user_id])
         render json: { errors: "incorrect user_id" },
@@ -54,13 +51,15 @@ module UserModule
         render json: { errors: @user_r.errors.full_messages },
                status: :unprocessable_entity
       end
-      render json: @user_r, status: :accepted
     end
 
-
     def destroy
-      if @user_r.destroy
-        render json: 'Successfully deleted', status: :accepted
+      if @user_r.user_id == @current_user.id or is_admin
+        if @user_r.destroy
+          render json: 'Successfully deleted', status: :accepted
+        end
+      else
+        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
       end
     end
 

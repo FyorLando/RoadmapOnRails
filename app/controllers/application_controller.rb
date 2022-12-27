@@ -16,4 +16,8 @@ class ApplicationController < ActionController::API
     end
   end
 
+  def is_admin
+    @current_user.role.const == "ADMIN"
+  end
+
 end
