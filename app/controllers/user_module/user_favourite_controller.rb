@@ -5,8 +5,7 @@ module UserModule
 
     def index
       @users_f = UserFavourite.includes(:topic)
-      # @users_f = @users_f.filter_by_user_id(user_f_params[:user_id]) if params[:user_id].present?
-      # @users_f = @users_f.
+      @users_f = @users_f.filter_by_user_id(user_f_params[:user_id]) if params[:user_id].present?
       render json: @users_f.to_json( :include => [:topic] , :except => [:topic_id]), status: :ok
     end
 
