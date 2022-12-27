@@ -4,8 +4,9 @@ module UserModule
     before_action :find_user_r, except: %i[create index]
 
     def index
-      @user_r = UserRead.all
-      render json: @user_r, status: :ok
+      @user_r = UserRead.includes(:topic)
+      @user_r = @user_r.filter_by_user_id(user_r_params[:user_id]) if params[:user_id].present?
+      render json: @user_r.to_json( :include => [:topic], :except => [:topic_id]), status: :ok
     end
 
     def show
@@ -20,10 +21,10 @@ module UserModule
                status: :unprocessable_entity
         return
       end
-      if RoadmapsModule::RoadNode.exists?(id: user_r_params[:node_id])
+      if RoadmapsModule::Topic.exists?(id: user_r_params[:topic_id])
         @user_r = UserRead.new(user_r_params)
       else
-        render json: { errors: "incorrect user_id" },
+        render json: { errors: "incorrect topic_id" },
                status: :unprocessable_entity
         return
       end
@@ -36,24 +37,19 @@ module UserModule
     end
 
     def update
-      if @user_r.user_id == @current_user.id or is_admin
-        unless User.exists?(id: user_r_params[:user_id])
-          render json: { errors: "incorrect user_id" },
-                 status: :unprocessable_entity
-          return
-        end
-        unless RoadmapsModule::RoadNode.exists?(id: user_r_params[:node_id])
-          render json: { errors: "incorrect user_id" },
-                 status: :unprocessable_entity
-          return
-        end
-        unless @user_r.update(user_r_params)
-          render json: { errors: @user_r.errors.full_messages },
-                 status: :unprocessable_entity
-        end
-        render json: @user_r, status: :accepted
-      else
-        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
+      unless User.exists?(id: user_r_params[:user_id])
+        render json: { errors: "incorrect user_id" },
+               status: :unprocessable_entity
+        return
+      end
+      unless RoadmapsModule::Topic.exists?(id: user_r_params[:topic_id])
+        render json: { errors: "incorrect topic_id" },
+               status: :unprocessable_entity
+        return
+      end
+      unless @user_r.update(user_r_params)
+        render json: { errors: @user_r.errors.full_messages },
+               status: :unprocessable_entity
       end
     end
 
@@ -77,7 +73,7 @@ module UserModule
 
     def user_r_params
       params.permit(
-        :user_id, :node_id
+        :user_id, :topic_id
       )
     end
 
