@@ -16,7 +16,7 @@ module RoadmapsModule
     end
 
     def show
-      render json: @node, status: :ok
+      render json: RoadNodeHelper.GenRoadNodeResponse(@node), status: :ok
     end
 
     def create
