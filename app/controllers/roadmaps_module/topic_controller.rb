@@ -4,8 +4,14 @@ module RoadmapsModule
     before_action :find_topic, except: [:create, :index]
 
     def index
-      @topics = Topic.all
-      render json: @topics, status: :ok
+      topics = Topic.all
+      if topics.count == 0
+        render json: [],
+               status: :ok
+      else
+        render json: TopicHelper.GenTopicsResponse(topics),
+               status: :ok
+      end
     end
 
     def show
