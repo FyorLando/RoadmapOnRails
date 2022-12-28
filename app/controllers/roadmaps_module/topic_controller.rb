@@ -25,20 +25,24 @@ module RoadmapsModule
     end
 
     def update
-      if @topic.user.id == @current_user.id
+      if @topic.user.id == @current_user.id or is_admin
         unless @topic.update(topic_params)
           render json: { errors: @topic.errors.full_messages },
                  status: :unprocessable_entity
         end
         render json: @topic, status: :accepted
+      else
+        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
       end
     end
 
     def destroy
-      if @topic.user.id != @current_user.id
+      if @topic.user.id == @current_user.id or is_admin
         if @topic.destroy
           render json: 'Successfully deleted', status: :accepted
         end
+      else
+        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
       end
     end
 

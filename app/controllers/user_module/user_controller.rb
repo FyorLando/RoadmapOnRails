@@ -1,7 +1,7 @@
 module UserModule
   class UserController < ApplicationController
     before_action :authorize_request, except: :create
-    before_action :find_user, except: %i[create index]
+    before_action :find_user, except: %i[create index me]
 
 
     def index
@@ -14,6 +14,9 @@ module UserModule
       render json: @user, status: :ok
     end
 
+    def me
+      render json: @current_user, status: :ok
+    end
 
     def create
       @user = User.new(user_params)

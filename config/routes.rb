@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   #User routes
   namespace :user_module do
+    get '/user/me', to: 'user#me'
     resources :user
     resources :user_favourite
     resources :user_read
