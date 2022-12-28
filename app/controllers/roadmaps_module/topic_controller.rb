@@ -15,7 +15,7 @@ module RoadmapsModule
     end
 
     def show
-      render json: @topic, status: :ok
+      render json: TopicHelper.GenTopicResponse(@topic), status: :ok
     end
 
     def create
