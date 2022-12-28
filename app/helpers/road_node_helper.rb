@@ -23,6 +23,17 @@ class RoadNodeHelper
     current_node
   end
 
+  def self.GenRoadNodeResponse(node)
+    resp = node.attributes
+    rates_array = RatesModule::NodeRate.where(:node_id => node["id"])
+    count_rates = rates_array.size()
+    resp[:rates] = rates_array
+    resp[:ave_rate] = count_rates>0?(
+      rates_array.inject(0){|result, elem| result = result + elem[:rate]}*1.0/count_rates):nil
+
+    resp
+  end
+
   def self.removeRecursively(node_id)
     children = RoadmapsModule::RoadNode.where(:parent_id => node_id)
 
