@@ -40,3 +40,5 @@
 * Полянский Макс (backend, RoR)
 * Лысенко Мария (backend, RoR)
 * Баранов Иван (frontend, Vue.JS)
+
+### Второй репозиторий: https://github.com/learde/RoadmapOnVue/
