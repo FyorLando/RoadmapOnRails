@@ -14,7 +14,7 @@ module RatesModule
 
     def create
       @node_rate = NodeRate.new(node_rate_params)
-      if @node_rate.user_id == @current_user.id or is_admin
+      if @node_rate.road_node.topic.created_user_id == @current_user.id or is_admin
         if @node_rate.save
           render json: @node_rate, status: :created
         else
@@ -27,7 +27,7 @@ module RatesModule
     end
 
     def update
-      if @node_rate.user_id == @current_user.id or is_admin
+      if @node_rate.road_node.topic.created_user_id == @current_user.id or is_admin
         unless @node_rate.update(node_rate_upd_params)
           render json: { errors: @node_rate.errors.full_messages },
                  status: :unprocessable_entity
@@ -39,7 +39,7 @@ module RatesModule
     end
 
     def destroy
-      if @node_rate.user_id == @current_user.id or is_admin
+      if @node_rate.road_node.topic.created_user_id == @current_user.id or is_admin
         if @node_rate.destroy
           render json: 'Successfully deleted', status: :accepted
         end
