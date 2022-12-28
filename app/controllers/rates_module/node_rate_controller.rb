@@ -3,17 +3,14 @@ module RatesModule
     before_action :authorize_request
     before_action :find_node_rate, except: %i[create index]
 
-
     def index
       @node_rates = NodeRate.all
       render json: @node_rates, status: :ok
     end
 
-
     def show
       render json: @node_rate, status: :ok
     end
-
 
     def create
       @node_rate = NodeRate.new(node_rate_params)
@@ -29,7 +26,6 @@ module RatesModule
       end
     end
 
-
     def update
       if @node_rate.user_id == @current_user.id or is_admin
         unless @node_rate.update(node_rate_upd_params)
@@ -41,7 +37,6 @@ module RatesModule
         render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
       end
     end
-
 
     def destroy
       if @node_rate.user_id == @current_user.id or is_admin

@@ -3,17 +3,14 @@ module RatesModule
     before_action :authorize_request
     before_action :find_topic_rate, except: %i[create index]
 
-
     def index
       @topic_rates = TopicRate.all
       render json: @topic_rates, status: :ok
     end
 
-
     def show
       render json: @topic_rate, status: :ok
     end
-
 
     def create
       @topic_rate = TopicRate.new(topic_rate_params)
@@ -26,7 +23,6 @@ module RatesModule
       end
     end
 
-
     def update
       if @topic_rate.user_id == @current_user.id or is_admin
         unless @topic_rate.update(topic_rate_upd_params)
@@ -38,7 +34,6 @@ module RatesModule
         render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
       end
     end
-
 
     def destroy
       if @topic_rate.user_id == @current_user.id or is_admin
