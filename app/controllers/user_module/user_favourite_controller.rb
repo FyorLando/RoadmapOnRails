@@ -6,7 +6,7 @@ module UserModule
     def index
       @users_f = UserFavourite.includes(:topic)
       @users_f = @users_f.filter_by_user_id(user_f_params[:user_id]) if params[:user_id].present?
-      render json: @users_f.to_json( :include => [:topic] , :except => [:topic_id]), status: :ok
+      render json: @users_f.to_json(:include => [:topic], :except => [:topic_id]), status: :ok
     end
 
     def show
@@ -59,13 +59,11 @@ module UserModule
     end
 
     def destroy
-      if @user_f.user_id == @current_user.id or is_admin
-        if @user_f.destroy
-          render json: 'Successfully deleted', status: :accepted
-        end
-      else
-        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
+
+      if @user_f.destroy
+        render json: 'Successfully deleted', status: :accepted
       end
+
     end
 
     private

@@ -54,12 +54,8 @@ module UserModule
     end
 
     def destroy
-      if @user_r.user_id == @current_user.id or is_admin
-        if @user_r.destroy
-          render json: 'Successfully deleted', status: :accepted
-        end
-      else
-        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
+      if @user_r.destroy
+        render json: 'Successfully deleted', status: :accepted
       end
     end
 
