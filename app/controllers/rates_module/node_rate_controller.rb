@@ -14,15 +14,11 @@ module RatesModule
 
     def create
       @node_rate = NodeRate.new(node_rate_params)
-      if @node_rate.road_node.topic.created_user_id == @current_user.id or is_admin
-        if @node_rate.save
-          render json: @node_rate, status: :created
-        else
-          render json: { errors: @node_rate.errors.full_messages },
-                 status: :unprocessable_entity
-        end
+      if @node_rate.save
+        render json: @node_rate, status: :created
       else
-        render json: { errors: 'Permission Denied!' }, status: :unprocessable_entity
+        render json: { errors: @node_rate.errors.full_messages },
+               status: :unprocessable_entity
       end
     end
 
